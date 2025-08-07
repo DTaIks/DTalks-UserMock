@@ -43,4 +43,3 @@ public class UserRequest {
     @NotNull
     private UserStatus status;
 }
-

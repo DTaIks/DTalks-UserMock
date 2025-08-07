@@ -29,6 +29,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// Swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
 	// DB Drivers
 	implementation 'com.mysql:mysql-connector-j:9.4.0'              // MySQL JDBC
 	implementation 'org.postgresql:postgresql:42.7.3'               // PostgreSQL JDBC
