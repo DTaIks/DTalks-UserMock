@@ -2,15 +2,19 @@ package com.dtalk.Dtalks_UserMock.dto;
 
 import com.dtalk.Dtalks_UserMock.entity.Identification;
 import com.dtalk.Dtalks_UserMock.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserResponse {
-    private String id;
+    private Long id;
     private String spaceId;
     private String name;
     private String nickname;

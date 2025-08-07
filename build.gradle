@@ -33,6 +33,10 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j:9.4.0'              // MySQL JDBC
 	implementation 'org.postgresql:postgresql:42.7.3'               // PostgreSQL JDBC
 
+	// Mapper
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
