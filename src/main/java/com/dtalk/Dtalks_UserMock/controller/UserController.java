@@ -71,5 +71,12 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(updatedUser));
     }
 
+    @DeleteMapping("/users")
+    public ResponseEntity<Void> deleteUser(@RequestParam("user_id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+
 
 }
