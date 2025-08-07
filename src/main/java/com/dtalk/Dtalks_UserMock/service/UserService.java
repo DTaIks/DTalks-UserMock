@@ -3,12 +3,12 @@ package com.dtalk.Dtalks_UserMock.service;
 
 import com.dtalk.Dtalks_UserMock.common.exception.custom.ConflictException;
 import com.dtalk.Dtalks_UserMock.common.exception.custom.InternalServerException;
+import com.dtalk.Dtalks_UserMock.common.exception.custom.NotFoundException;
 import com.dtalk.Dtalks_UserMock.dto.UserListResponse;
 import com.dtalk.Dtalks_UserMock.dto.UserRequest;
 import com.dtalk.Dtalks_UserMock.dto.UserResponse;
 import com.dtalk.Dtalks_UserMock.entity.User;
 import com.dtalk.Dtalks_UserMock.entity.UserStatus;
-import com.dtalk.Dtalks_UserMock.mapper.UserMapper;
 import com.dtalk.Dtalks_UserMock.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     public Optional<UserResponse> getUserInfo(Long userId) {
         return userRepository.findById(userId)
-                .map(userMapper::toResponse);
+                .map(UserResponse::from);
     }
-
+    
     public Optional<UserResponse> getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(UserResponse::from);
@@ -114,5 +113,15 @@ public class UserService {
             throw new InternalServerException("사용자 저장 중 오류가 발생했습니다.");
         }
     }
+
+    @Transactional
+    public UserResponse updateUser(Long userId, UserRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다."));
+
+        user.updateFromRequest(request);
+        return UserResponse.from(user);
+    }
+
 
 }

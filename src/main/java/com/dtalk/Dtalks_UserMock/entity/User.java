@@ -1,5 +1,6 @@
 package com.dtalk.Dtalks_UserMock.entity;
 
+import com.dtalk.Dtalks_UserMock.dto.UserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,4 +44,29 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    public void updateFromRequest(UserRequest request) {
+        this.name = request.getName();
+        this.nickname = request.getNickname();
+        this.avatarUrl = request.getAvatarUrl();
+        this.department = request.getDepartment();
+        this.position = request.getPosition();
+        this.responsibility = request.getResponsibility();
+        this.tels = request.getTels();
+        this.mobiles = request.getMobiles();
+        this.workStartTime = request.getWorkStartTime();
+        this.workEndTime = request.getWorkEndTime();
+        this.vacationStartTime = request.getVacationStartTime();
+        this.vacationEndTime = request.getVacationEndTime();
+        this.status = request.getStatus();
+
+        // ID 정보는 먼저 삭제하고 다시 등록
+        this.identifications.clear();
+        if (request.getIdentifications() != null) {
+            this.identifications.addAll(request.getIdentifications());
+        }
+    }
+
 }
+
+
