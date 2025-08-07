@@ -18,4 +18,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT u FROM User u JOIN u.identifications i WHERE i.type = 'email' AND i.value = :email")
     Optional<User> findByEmail(@Param("email") String email);
 
+    @Query("SELECT u FROM User u JOIN u.identifications i " +
+            "WHERE i.type = 'email' AND i.value = :email AND u.employeeNumber = :employeeNumber")
+    Optional<User> findByEmailAndEmployeeNumber(@Param("email") String email,
+                                                @Param("employeeNumber") String employeeNumber);
+
+
 }
