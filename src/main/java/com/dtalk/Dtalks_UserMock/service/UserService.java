@@ -16,5 +16,11 @@ public class UserService {
         return userRepository.findById(userId)
                 .map(UserResponse::from);
     }
+
+    public Optional<UserResponse> getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserResponse::from);
+    }
+
 }
 

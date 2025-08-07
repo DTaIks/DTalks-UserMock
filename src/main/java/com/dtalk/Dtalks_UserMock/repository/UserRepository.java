@@ -2,6 +2,8 @@ package com.dtalk.Dtalks_UserMock.repository;
 
 import com.dtalk.Dtalks_UserMock.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -13,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, String> {
      */
     Optional<User> findByName(String name); // 예시
 
-    // 나중에 필요 시 쿼리 확장 가능 (예: findByIdentifications_Value)
+    @Query("SELECT u FROM User u JOIN u.identifications i WHERE i.type = 'email' AND i.value = :email")
+    Optional<User> findByEmail(@Param("email") String email);
+
 }
 

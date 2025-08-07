@@ -24,6 +24,10 @@ public class User {
     private String department;
 
     @ElementCollection
+    @CollectionTable(
+            name = "user_identifications",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
     private List<Identification> identifications;
 
     private String position;
