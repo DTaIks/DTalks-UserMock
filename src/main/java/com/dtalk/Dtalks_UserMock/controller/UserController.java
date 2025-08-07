@@ -2,6 +2,7 @@ package com.dtalk.Dtalks_UserMock.controller;
 
 import com.dtalk.Dtalks_UserMock.common.response.ApiError;
 import com.dtalk.Dtalks_UserMock.common.response.ApiResponse;
+import com.dtalk.Dtalks_UserMock.dto.UserListResponse;
 import com.dtalk.Dtalks_UserMock.dto.UserResponse;
 import com.dtalk.Dtalks_UserMock.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,15 @@ public class UserController {
                 .orElse(ResponseEntity.ok(ApiResponse.fail(
                         ApiError.of("user_not_found", "멤버를 찾을 수 없음")
                 )));
+    }
+
+    @GetMapping("/users/list")
+    public ResponseEntity<UserListResponse> getUserList(
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) String cursor,
+            @RequestParam(name = "status_in", required = false) String statusIn
+    ) {
+        return ResponseEntity.ok(userService.getUserList(limit, cursor, statusIn));
     }
 
 }

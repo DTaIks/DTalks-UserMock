@@ -1,10 +1,13 @@
 package com.dtalk.Dtalks_UserMock.repository;
 
 import com.dtalk.Dtalks_UserMock.entity.User;
+import com.dtalk.Dtalks_UserMock.entity.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
@@ -22,6 +25,16 @@ public interface UserRepository extends JpaRepository<User, String> {
             "WHERE i.type = 'email' AND i.value = :email AND u.employeeNumber = :employeeNumber")
     Optional<User> findByEmailAndEmployeeNumber(@Param("email") String email,
                                                 @Param("employeeNumber") String employeeNumber);
+
+    @Query("SELECT u FROM User u " +
+            "WHERE (:status IS NULL OR u.status = :status) " +
+            "AND u.id > :cursorId " +
+            "ORDER BY u.id ASC")
+    List<User> findUserListWithCursorAndStatus(@Param("status") UserStatus status,
+                                               @Param("cursorId") Long cursorId,
+                                               Pageable pageable);
+
+
 
 
 }
