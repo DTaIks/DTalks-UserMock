@@ -27,6 +27,8 @@ public class UserResponse {
     private Long vacationEndTime;
     private String status;
 
+    private String employeeNumber;
+
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -45,6 +47,7 @@ public class UserResponse {
                 .vacationStartTime(user.getVacationStartTime())
                 .vacationEndTime(user.getVacationEndTime())
                 .status(user.getStatus().name())
+                .employeeNumber(user.getEmployeeNumber())
                 .build();
     }
 }

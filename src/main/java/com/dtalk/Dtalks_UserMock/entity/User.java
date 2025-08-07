@@ -23,6 +23,8 @@ public class User {
     private String avatarUrl;
     private String department;
 
+    private String employeeNumber; //사번 추가
+
     @ElementCollection
     @CollectionTable(
             name = "user_identifications",
