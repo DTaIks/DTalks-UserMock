@@ -1,4 +1,30 @@
 package com.dtalk.Dtalks_UserMock.controller;
 
+import com.dtalk.Dtalks_UserMock.common.response.ApiError;
+import com.dtalk.Dtalks_UserMock.common.response.ApiResponse;
+import com.dtalk.Dtalks_UserMock.dto.UserResponse;
+import com.dtalk.Dtalks_UserMock.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/v1")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final UserService userService;
+
+    @GetMapping("/users.info")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserInfo(@RequestParam("user_id") String userId) {
+        return userService.getUserInfo(userId)
+                .map(user -> ResponseEntity.ok(ApiResponse.success(user)))
+                .orElse(ResponseEntity.ok(ApiResponse.<UserResponse>fail(
+                        ApiError.of("user_not_found", "멤버를 찾을 수 없음")
+                )));
+    }
+
 }
