@@ -22,4 +22,10 @@ public class UserService {
                 .map(UserResponse::from);
     }
 
+    public Optional<UserResponse> getUserByEmailAndEmployeeNumber(String email, String employeeNumber) {
+        return userRepository.findByEmailAndEmployeeNumber(email, employeeNumber)
+                .map(UserResponse::from);
+    }
+
+
 }

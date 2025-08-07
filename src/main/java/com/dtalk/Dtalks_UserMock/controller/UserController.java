@@ -36,4 +36,16 @@ public class UserController {
                 )));
     }
 
+    @GetMapping("/users/find_by_email_and_employee_number")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserByEmailAndEmployeeNumber(
+            @RequestParam("email") String email,
+            @RequestParam("employee_number") String employeeNumber) {
+
+        return userService.getUserByEmailAndEmployeeNumber(email, employeeNumber)
+                .map(user -> ResponseEntity.ok(ApiResponse.success(user)))
+                .orElse(ResponseEntity.ok(ApiResponse.fail(
+                        ApiError.of("user_not_found", "멤버를 찾을 수 없음")
+                )));
+    }
+
 }
