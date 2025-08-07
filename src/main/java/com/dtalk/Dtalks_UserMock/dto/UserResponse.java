@@ -32,6 +32,7 @@ public class UserResponse {
     private Long vacationEndTime;
     private String status;
 
+    // 수동 변환 메서드
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -50,7 +51,7 @@ public class UserResponse {
                 .workEndTime(user.getWorkEndTime())
                 .vacationStartTime(user.getVacationStartTime())
                 .vacationEndTime(user.getVacationEndTime())
-                .status(user.getStatus().name())
+                .status(user.getStatus().name()) // enum → string 변환
                 .build();
     }
 }

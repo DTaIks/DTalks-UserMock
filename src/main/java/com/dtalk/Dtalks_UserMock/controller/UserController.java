@@ -64,4 +64,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/users")
+    public ResponseEntity<ApiResponse<UserResponse>> updateUser(@RequestParam("user_id") Long userId,
+                                                                @RequestBody @Valid UserRequest request) {
+        UserResponse updatedUser = userService.updateUser(userId, request);
+        return ResponseEntity.ok(ApiResponse.success(updatedUser));
+    }
+
+
 }
