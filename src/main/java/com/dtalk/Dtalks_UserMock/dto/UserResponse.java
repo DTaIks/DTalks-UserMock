@@ -16,6 +16,7 @@ public class UserResponse {
     private String nickname;
     private String avatarUrl;
     private String department;
+    private String employeeNumber;
     private List<Identification> identifications;
     private String position;
     private String responsibility;
@@ -27,8 +28,6 @@ public class UserResponse {
     private Long vacationEndTime;
     private String status;
 
-    private String employeeNumber;
-
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -37,6 +36,7 @@ public class UserResponse {
                 .nickname(user.getNickname())
                 .avatarUrl(user.getAvatarUrl())
                 .department(user.getDepartment())
+                .employeeNumber(user.getEmployeeNumber())
                 .identifications(user.getIdentifications())
                 .position(user.getPosition())
                 .responsibility(user.getResponsibility())
@@ -47,7 +47,6 @@ public class UserResponse {
                 .vacationStartTime(user.getVacationStartTime())
                 .vacationEndTime(user.getVacationEndTime())
                 .status(user.getStatus().name())
-                .employeeNumber(user.getEmployeeNumber())
                 .build();
     }
 }
