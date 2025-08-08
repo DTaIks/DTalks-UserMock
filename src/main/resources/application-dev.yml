@@ -25,6 +25,15 @@ spring:
 server:
   port: 8081
 
+sentry:
+  dsn: ${SENTRY_REPOSITORY_DSN}
+  environment: ${SENTRY_ENVIRONMENT}
+  servername: ${SENTRY_SERVERNAME}
+  repository-uri : ${SENTRY_REPOSITORY_URI}
+
+discord:
+  webhook-uri: ${DISCORD_WEBHOOK_URI}
+
 # 로그 설정 (선택적으로 활성화)
 # logging:
 #   level:
