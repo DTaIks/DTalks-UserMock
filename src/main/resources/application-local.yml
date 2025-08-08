@@ -22,6 +22,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+server:
+  port: 8081
+
 # 로그 설정 (선택적으로 활성화)
 # logging:
 #   level:
