@@ -1,0 +1,66 @@
+<configuration>
+    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+    <property name="LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) [%X{traceId:-},%X{spanId:-}] %boldWhite([%C.%M:%yellow(%L)]) - %msg%n"/>
+
+    <!--console 에 출력되는 로그 형식 지정-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <springProperty name="DISCORD_WEBHOOK_URI" source="discord.webhook-uri" />
+    <springProperty name="NAME" source="spring.application.name" />
+    <springProperty name="ENVIRONMENT" source="sentry.environment" />
+    <springProperty name="SENTRY_REPOSITORY_URI" source="sentry.repository-uri" />
+    <springProperty name="SENTRY_REPOSITORY_DSN" source="sentry.dsn" />
+
+    <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
+        <webhookUri>${DISCORD_WEBHOOK_URI}</webhookUri>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>*🚨[${ENVIRONMENT}]-[${NAME}] %d{yyyy-MM-dd HH:mm:ss.SSS} %-4relative [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %class - %msg &lt;${SENTRY_REPOSITORY_URI}&gt;*
+                %n
+            </pattern>
+        </layout>
+        <username>DTALKS-ERROR-BOT</username>
+    </appender>
+
+    <appender name="ASYNC_DISCORD" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="DISCORD" />
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <maxRequestBodySize>always</maxRequestBodySize>
+        <sendDefaultPii>true</sendDefaultPii>
+        <tracesSampleRate>1.0</tracesSampleRate>
+        <minimumEventLevel>ERROR</minimumEventLevel>
+        <minimumBreadcrumbLevel>DEBUG</minimumBreadcrumbLevel>
+
+        <options>
+            <dsn>${SENTRY_REPOSITORY_DSN}</dsn>
+        </options>
+    </appender>
+
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="SENTRY"/>
+            <appender-ref ref="ASYNC_DISCORD"/>
+        </root>
+    </springProfile>
+
+</configuration>
