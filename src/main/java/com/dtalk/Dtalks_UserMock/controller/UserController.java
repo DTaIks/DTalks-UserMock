@@ -1,0 +1,91 @@
+package com.dtalk.Dtalks_UserMock.controller;
+
+import com.dtalk.Dtalks_UserMock.common.response.ApiError;
+import com.dtalk.Dtalks_UserMock.common.response.ApiResponse;
+import com.dtalk.Dtalks_UserMock.dto.UserListResponse;
+import com.dtalk.Dtalks_UserMock.dto.UserRequest;
+import com.dtalk.Dtalks_UserMock.dto.UserResponse;
+import com.dtalk.Dtalks_UserMock.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/v1")
+@RequiredArgsConstructor
+@Tag(name = "User", description = "유저 정보 관리 API")
+public class UserController {
+
+    private final UserService userService;
+
+    @Operation(summary = "유저 정보 조회", description = "user_id를 이용해 유저 정보를 조회합니다.")
+    @GetMapping("/users/info")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserInfo(@RequestParam("user_id") Long userId) {
+        return userService.getUserInfo(userId)
+                .map(user -> ResponseEntity.ok(ApiResponse.success(user)))
+                .orElse(ResponseEntity.ok(ApiResponse.<UserResponse>fail(
+                        ApiError.of("user_not_found", "멤버를 찾을 수 없음")
+                )));
+    }
+
+    @Operation(summary = "이메일로 유저 조회")
+    @GetMapping("/users/find_by_email")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserByEmail(@RequestParam("email") String email) {
+        return userService.getUserByEmail(email)
+                .map(user -> ResponseEntity.ok(ApiResponse.success(user)))
+                .orElse(ResponseEntity.ok(ApiResponse.fail(
+                        ApiError.of("user_not_found", "멤버를 찾을 수 없음")
+                )));
+    }
+
+    @Operation(summary = "이메일 + 사번으로 유저 조회")
+    @GetMapping("/users/find_by_email_and_employee_number")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserByEmailAndEmployeeNumber(
+            @RequestParam("email") String email,
+            @RequestParam("employee_number") String employeeNumber) {
+
+        return userService.getUserByEmailAndEmployeeNumber(email, employeeNumber)
+                .map(user -> ResponseEntity.ok(ApiResponse.success(user)))
+                .orElse(ResponseEntity.ok(ApiResponse.fail(
+                        ApiError.of("user_not_found", "멤버를 찾을 수 없음")
+                )));
+    }
+
+    @Operation(summary = "유저 목록 조회 (cursor 기반)")
+    @GetMapping("/users/list")
+    public ResponseEntity<UserListResponse> getUserList(
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) Long cursor, // ← 수정
+            @RequestParam(name = "status_in", required = false) String statusIn
+    ) {
+        return ResponseEntity.ok(userService.getUserList(limit, cursor, statusIn));
+    }
+
+    @Operation(summary = "유저 정보 추가")
+    @PostMapping("/users")
+    public ResponseEntity<Void> addUser(@Valid @RequestBody UserRequest request) {
+        userService.addUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "유저 정보 수정")
+    @PutMapping("/users")
+    public ResponseEntity<ApiResponse<UserResponse>> updateUser(@RequestParam("user_id") Long userId,
+                                                                @RequestBody @Valid UserRequest request) {
+        UserResponse updatedUser = userService.updateUser(userId, request);
+        return ResponseEntity.ok(ApiResponse.success(updatedUser));
+    }
+
+    @Operation(summary = "유저 삭제")
+    @DeleteMapping("/users")
+    public ResponseEntity<Void> deleteUser(@RequestParam("user_id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+}
