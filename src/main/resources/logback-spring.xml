@@ -38,9 +38,6 @@
             <level>ERROR</level>
         </filter>
 
-        <maxRequestBodySize>always</maxRequestBodySize>
-        <sendDefaultPii>true</sendDefaultPii>
-        <tracesSampleRate>1.0</tracesSampleRate>
         <minimumEventLevel>ERROR</minimumEventLevel>
         <minimumBreadcrumbLevel>DEBUG</minimumBreadcrumbLevel>
 
