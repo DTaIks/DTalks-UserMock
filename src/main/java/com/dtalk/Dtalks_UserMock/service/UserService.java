@@ -25,21 +25,25 @@ import java.util.*;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public Optional<UserResponse> getUserInfo(Long userId) {
         return userRepository.findById(userId)
                 .map(UserResponse::from);
     }
     
+    @Transactional(readOnly = true)
     public Optional<UserResponse> getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(UserResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public Optional<UserResponse> getUserByEmailAndEmployeeNumber(String email, String employeeNumber) {
         return userRepository.findByEmailAndEmployeeNumber(email, employeeNumber)
                 .map(UserResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public UserListResponse getUserList(int limit, Long cursor, String statusIn) {
         Long cursorId = decodeCursorOrDefault(cursor);
 
