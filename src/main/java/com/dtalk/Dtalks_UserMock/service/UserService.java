@@ -88,7 +88,6 @@ public class UserService {
         String userId = UUID.randomUUID().toString();
 
         User user = User.builder()
-//                .id(userId)  // 자동 생성됨
                 .spaceId(request.getSpaceId())
                 .name(request.getName())
                 .nickname(request.getNickname())
@@ -105,6 +104,7 @@ public class UserService {
                 .vacationEndTime(request.getVacationEndTime())
                 .status(request.getStatus())
                 .identifications(request.getIdentifications())
+                .role(request.getRole())
                 .build();
 
         try {

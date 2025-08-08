@@ -2,18 +2,18 @@ package com.dtalk.Dtalks_UserMock.dto;
 
 import com.dtalk.Dtalks_UserMock.entity.Identification;
 import com.dtalk.Dtalks_UserMock.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
+
     private Long id;
     private String spaceId;
     private String name;
@@ -30,9 +30,9 @@ public class UserResponse {
     private Long workEndTime;
     private Long vacationStartTime;
     private Long vacationEndTime;
-    private String status;
+    private String status;  // UserStatus → String 변환 유지 시
+    private String role;    // 추가됨
 
-    // 수동 변환 메서드
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -51,7 +51,8 @@ public class UserResponse {
                 .workEndTime(user.getWorkEndTime())
                 .vacationStartTime(user.getVacationStartTime())
                 .vacationEndTime(user.getVacationEndTime())
-                .status(user.getStatus().name()) // enum → string 변환
+                .status(user.getStatus().name())
+                .role(user.getRole().name()) // RoleType enum → String
                 .build();
     }
 }
